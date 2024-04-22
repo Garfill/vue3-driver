@@ -3,22 +3,22 @@
   "private": false,
   "version": "0.1.0",
   "type": "module",
+  "main": "./dist/vue3-driver.umd.cjs",
+  "module": "./dist/vue3-driver.js",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
     "preview": "vite preview"
   },
-  "dependencies": {
-  },
   "devDependencies": {
-    "vue": "^3.4.21",
     "@vitejs/plugin-vue": "^5.0.4",
-    "driver.js": "^1.3.1",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
+    "vue": "^3.4.21",
     "vue-tsc": "^2.0.6"
   },
-  "peerDependencies": {
+  "dependencies": {
+    "@types/node": "^20.12.7",
     "driver.js": "^1.3.1"
   }
 }

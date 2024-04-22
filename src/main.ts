@@ -1,5 +1,9 @@
 import { createApp } from 'vue'
-import './style.css'
 import App from './App.vue'
+import Vue3Directive from '@lib'
 
-createApp(App).mount('#app')
+const app = createApp(App)
+
+app.use(Vue3Directive)
+
+app.mount('#app')
