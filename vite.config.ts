@@ -13,8 +13,8 @@ export default defineConfig({
     minify: false,
     lib: {
       entry: path.resolve(__dirname, './lib/index.ts'),
-      name: 'Vue3Driver',
-      fileName: 'vue3-driver',
+      name: 'VueDriver',
+      fileName: 'vue-driverjs',
       formats: ['es', 'umd'],
     },
     cssCodeSplit: false,

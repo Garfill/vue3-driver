@@ -1,10 +1,10 @@
 {
-  "name": "vue3-driver",
+  "name": "vue-driverjs",
   "private": false,
   "version": "0.1.0",
   "type": "module",
-  "main": "./dist/vue3-driver.umd.cjs",
-  "module": "./dist/vue3-driver.js",
+  "main": "./dist/vue-driverjs.umd.cjs",
+  "module": "./dist/vue-driverjs.js",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
