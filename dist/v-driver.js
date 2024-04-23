@@ -642,7 +642,7 @@ const install = (app, option = {}) => {
   userOption = option;
   app.directive("step", {
     mounted(el, binding) {
-      const stepIndex = Number(binding.arg) || 0;
+      const stepIndex = binding.arg !== "" ? Number(binding.arg) - 1 : 1;
       if (!defaultDriverOption.steps[stepIndex]) {
         defaultDriverOption.steps[stepIndex] = {
           element: el

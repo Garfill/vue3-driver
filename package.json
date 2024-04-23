@@ -3,7 +3,7 @@
   "private": false,
   "version": "0.1.1",
   "type": "module",
-  "main": "./dist/vue-driverjs.umd.cjs",
+  "main": "./dist/vue-driverjs.umd.js",
   "module": "./dist/vue-driverjs.js",
   "scripts": {
     "dev": "vite",

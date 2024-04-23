@@ -28,7 +28,8 @@ const install: installFuncType = (app: App<Element>, option: any = {}) => {
 
   app.directive('step', {
     mounted(el, binding) {
-      const stepIndex = Number(binding.arg) || 0
+      // binding.arg starts from 1
+      const stepIndex = binding.arg !== '' ? Number(binding.arg) - 1 : 1
       if (!defaultDriverOption.steps![stepIndex]) {
         defaultDriverOption.steps![stepIndex] = {
           element: el,

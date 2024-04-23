@@ -1,15 +1,15 @@
 <template>
-  <div v-step:0>
+  <div v-step:1>
     first
   </div>
-  <div v-step:1>
+  <div v-step:2>
     second
   </div>
 </template>
 
 
 <script lang="ts" setup>
-  import { useDirver } from "@dist/v-driver";
+  import { useDirver } from "@lib";
   import { onMounted } from "vue";
 
   const driver = useDirver()
