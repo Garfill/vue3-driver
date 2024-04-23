@@ -1,22 +1,18 @@
 <script
   setup
   lang="ts">
-import { useDirver } from "@lib";
-import { onMounted } from "vue";
-
-const driver = useDirver()
-onMounted(() => {
-  driver.drive()
-})
 </script>
 
 <template>
   <ul>
-    <li v-step:1>
+    <li>
       <router-link to="/a">page a</router-link>
     </li>
-    <li v-step:2>
+    <li>
       <router-link to="/b">page b</router-link>
+    </li>
+    <li>
+      <router-link to="/multi">page multi</router-link>
     </li>
   </ul>
 </template>

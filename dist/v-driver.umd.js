@@ -667,41 +667,53 @@ var __publicField = (obj, key, value) => {
       this.steps[index] = step || void 0;
     }
   }
-  __publicField(VDriver, "instance");
-  function createInstance(steps, options) {
-    if (!VDriver.instance) {
-      VDriver.instance = new VDriver(steps, options);
-    }
-    return VDriver.instance;
+  function createInstanceMaker(options = {}) {
+    return function createInstance2(steps = []) {
+      return new VDriver(steps, options);
+    };
   }
-  let DriverInstance;
+  const driverInstMap = /* @__PURE__ */ new Map();
+  let createInstance;
   const install = (app, option = {}) => {
     if (install._installed) {
       console.error("Duplicated install. Just install the lib once");
       return;
     }
+    createInstance = createInstanceMaker(option);
     install._installed = true;
-    DriverInstance = createInstance(option);
     app.directive("step", {
       mounted(el, binding) {
-        if (DriverInstance) {
+        console.log(binding);
+        const instanceKey = Object.keys(binding.modifiers)[0];
+        const instance = getDriverInstanceFromKey(instanceKey);
+        if (instance) {
           const stepIndex = getStepIndex(binding.arg);
-          DriverInstance.changeStep(stepIndex, {
+          instance.changeStep(stepIndex, {
             element: el
           });
         }
       },
       beforeUnmount(_, binding) {
-        if (DriverInstance) {
+        const instanceKey = Object.keys(binding.modifiers)[0];
+        const instance = getDriverInstanceFromKey(instanceKey);
+        if (instance) {
           const stepIndex = getStepIndex(binding.arg);
-          DriverInstance.changeStep(stepIndex);
+          instance.changeStep(stepIndex);
         }
       }
     });
   };
   install._installed = false;
-  function useDirver() {
-    return DriverInstance;
+  function useDirver(key = "default") {
+    let inst = driverInstMap.get(key);
+    if (!inst) {
+      inst = createInstance();
+      driverInstMap.set(key, inst);
+    }
+    return inst;
+  }
+  function getDriverInstanceFromKey(key = "default") {
+    return driverInstMap.get(key);
   }
   exports2.default = install;
   exports2.useDirver = useDirver;

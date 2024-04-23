@@ -4,7 +4,6 @@ function getStepIndex(num: any): number | null {
   return isNaN(num) ? null :  Number(num) - 1
 }
 
-
 interface VDriverConfig {
   steps: any[]
   [param: string]: any
@@ -16,7 +15,6 @@ const defaultOption = {
 }
 
 class VDriver {
-  static instance: any
   _driver: any
   steps: any[]
   options: VDriverConfig | undefined
@@ -39,14 +37,13 @@ class VDriver {
   }
 }
 
-function createInstance(steps: any[], options?: VDriverConfig) {
-  if (!VDriver.instance) {
-    VDriver.instance = new VDriver(steps, options)
+function createInstanceMaker(options: VDriverConfig = ({} as VDriverConfig)) {
+  return function createInstance(steps: any[] = []) {
+    return new VDriver(steps, options)
   }
-  return VDriver.instance
 }
 
 export {
   getStepIndex,
-  createInstance,
+  createInstanceMaker,
 }

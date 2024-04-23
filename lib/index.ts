@@ -1,6 +1,6 @@
 import type { App } from 'vue';
 import 'driver.js/dist/driver.css'
-import { createInstance, getStepIndex } from "./helper.ts"; // inline for css inject
+import { createInstanceMaker, getStepIndex } from "./helper.ts"; // inline for css inject
 
 interface installFuncType {
   (app: App<Element>): void
@@ -8,29 +8,38 @@ interface installFuncType {
   _installed: boolean
 }
 
-let DriverInstance: any
+const driverInstMap = new Map()
+
+let createInstance: any
 
 const install: installFuncType = (app: App<Element>, option: any = {}) => {
   if (install._installed) {
     console.error('Duplicated install. Just install the lib once')
     return
   }
+
+  createInstance = createInstanceMaker(option)
+
   install._installed = true
-  DriverInstance = createInstance(option)
 
   app.directive('step', {
     mounted(el, binding) {
-      if (DriverInstance) {
+      console.log(binding)
+      const instanceKey = Object.keys(binding.modifiers)[0]
+      const instance = getDriverInstanceFromKey(instanceKey)
+      if (instance) {
         const stepIndex = getStepIndex(binding.arg)
-        DriverInstance.changeStep(stepIndex, {
+        instance.changeStep(stepIndex, {
           element: el
         })
       }
     },
     beforeUnmount(_, binding) {
-      if (DriverInstance) {
+      const instanceKey = Object.keys(binding.modifiers)[0]
+      const instance = getDriverInstanceFromKey(instanceKey)
+      if (instance) {
         const stepIndex = getStepIndex(binding.arg)
-        DriverInstance.changeStep(stepIndex)
+        instance.changeStep(stepIndex)
       }
     }
   })
@@ -39,8 +48,17 @@ const install: installFuncType = (app: App<Element>, option: any = {}) => {
 install._installed = false
 
 
-function useDirver() {
-  return DriverInstance;
+function useDirver(key: string = 'default') {
+  let inst = driverInstMap.get(key)
+  if (!inst) {
+    inst = createInstance()
+    driverInstMap.set(key, inst)
+  }
+  return inst
+}
+
+function getDriverInstanceFromKey(key: string = 'default') {
+  return driverInstMap.get(key)
 }
 
 
