@@ -6,7 +6,7 @@ console.log('release start ==================', new Date().toLocaleString())
 const build = spawn("npm", ['run', 'build'], { stdio: "inherit" })
 build.on('exit', () => {
   console.log(' ============= build finish =======')
-  releaseAction().then(releaseAction)
+  releaseAction()
 })
 
 
@@ -69,23 +69,19 @@ function npmPublish() {
 
 function releaseAction() {
 
-  const actions = [gitAdd, gitCommit, npmVersionChange , npmPublish, gitPush]
+  const actions = [gitAdd, gitCommit, npmVersionChange, npmPublish, gitPush]
 
 
-  return new Promise((resolve, reject) => {
-    function execGitActions() {
-      if (actions.length) {
-        const a = actions.shift()
-        a().then(() => {
-          execGitActions()
-        })
-      } else {
-        resolve()
-      }
+  function execGitActions() {
+    if (actions.length) {
+      const a = actions.shift()
+      a().then(() => {
+        execGitActions()
+      })
     }
+  }
 
-    execGitActions()
-  })
+  execGitActions()
 }
 
 
