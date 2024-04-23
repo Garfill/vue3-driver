@@ -24,6 +24,9 @@ importers:
       vite:
         specifier: ^5.2.0
         version: 5.2.9(@types/node@20.12.7)
+      vite-plugin-lib-inject-css:
+        specifier: ^2.0.1
+        version: 2.0.1(vite@5.2.9(@types/node@20.12.7))
       vue:
         specifier: ^3.4.21
         version: 3.4.23(typescript@5.4.5)
@@ -424,6 +427,11 @@ packages:
   undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
 
+  vite-plugin-lib-inject-css@2.0.1:
+    resolution: {integrity: sha512-86VU8m4t3TNPk9xfdnNDqn1OHkgrPHpP7B5wkVys4tWSLwMMIucCgJdc5wenGntLNMWKChJV0Ut3qGH6iGojMg==}
+    peerDependencies:
+      vite: '*'
+
   vite@5.2.9:
     resolution: {integrity: sha512-uOQWfuZBlc6Y3W/DTuQ1Sr+oIXWvqljLvS881SVmAj00d5RdgShLcuXWxseWPd4HXwiYBFW/vXHfKFeqj9uQnw==}
     engines: {node: ^18.0.0 || >=20.0.0}
@@ -804,6 +812,12 @@ snapshots:
   typescript@5.4.5: {}
 
   undici-types@5.26.5: {}
+
+  vite-plugin-lib-inject-css@2.0.1(vite@5.2.9(@types/node@20.12.7)):
+    dependencies:
+      magic-string: 0.30.10
+      picocolors: 1.0.0
+      vite: 5.2.9(@types/node@20.12.7)
 
   vite@5.2.9(@types/node@20.12.7):
     dependencies:

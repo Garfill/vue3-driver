@@ -1,7 +1,7 @@
 import type { App } from 'vue';
 import { driver } from 'driver.js'
-import 'driver.js/dist/driver.css?inline' // inline for css inject
 import type { Config } from  'driver.js'
+import 'driver.js/dist/driver.css' // inline for css inject
 
 interface installFuncType {
   (app: App<Element>): void

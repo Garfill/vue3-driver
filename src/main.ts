@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import Vue3Directive from '@lib'
+import Vue3Directive from '@dist/v-driver'
 
 const app = createApp(App)
 

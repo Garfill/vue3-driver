@@ -1,5 +1,5 @@
 {
-  "name": "vue-driverjs",
+  "name": "v-driver",
   "private": false,
   "version": "0.1.0",
   "type": "module",
@@ -14,11 +14,21 @@
     "@vitejs/plugin-vue": "^5.0.4",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
+    "vite-plugin-lib-inject-css": "^2.0.1",
     "vue": "^3.4.21",
     "vue-tsc": "^2.0.6"
   },
   "dependencies": {
     "@types/node": "^20.12.7",
     "driver.js": "^1.3.1"
-  }
+  },
+  "exports": {
+    ".": {
+      "require": "./dist/v-driver.umd.cjs",
+      "import": "./dist/v-driver.js"
+    }
+  },
+  "files": [
+    "dist/**/*"
+  ]
 }

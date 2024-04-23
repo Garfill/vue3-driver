@@ -9,7 +9,7 @@
 
 
 <script lang="ts" setup>
-  import { useDirver } from "@lib";
+  import { useDirver } from "@dist/v-driver";
   import { onMounted } from "vue";
 
   const driver = useDirver()

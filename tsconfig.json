@@ -21,8 +21,9 @@
     "noFallthroughCasesInSwitch": true,
     /* resolve path alias */
     "paths": {
-      "@lib": ["./lib"]
-    }
+      "@lib": ["./lib"],
+      "@dist": ["./dist"]
+    },
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }],
