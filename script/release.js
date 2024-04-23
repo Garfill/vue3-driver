@@ -73,6 +73,6 @@ function releaseVersion() {
   const release = spawn('npm', ['version', version], { stdio: "inherit" })
   release.on('exit', () => {
     console.log('Version closed')
-    // spawn('npm', ['publish'])
+    spawn('npm', ['publish'])
   })
 }
