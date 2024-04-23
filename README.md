@@ -18,6 +18,7 @@ Option can be found [here](https://driverjs.com/docs/configuration)
 
 ```vue 
 // component.vue
+// now you can use v-step:index
 // template
 <div v-step:1>/* first content */</div>
 <div v-step:2>/* second content */</div>
@@ -31,3 +32,5 @@ Option can be found [here](https://driverjs.com/docs/configuration)
     })
 </script>
 ```
+## Notice
+Please make sure the index in (v-step:[index]) is unique in one page.

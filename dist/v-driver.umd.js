@@ -1,7 +1,13 @@
 (function(global, factory) {
   typeof exports === "object" && typeof module !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global = typeof globalThis !== "undefined" ? globalThis : global || self, factory(global.VDriver = {}));
 })(this, function(exports2) {
-  "use strict";
+  "use strict";var __defProp = Object.defineProperty;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField = (obj, key, value) => {
+  __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+  return value;
+};
+
   var __vite_style__ = document.createElement("style");
   __vite_style__.textContent = '.driver-active .driver-overlay,.driver-active *{pointer-events:none}.driver-active .driver-active-element,.driver-active .driver-active-element *,.driver-popover,.driver-popover *{pointer-events:auto}@keyframes animate-fade-in{0%{opacity:0}to{opacity:1}}.driver-fade .driver-overlay{animation:animate-fade-in .2s ease-in-out}.driver-fade .driver-popover{animation:animate-fade-in .2s}.driver-popover{all:unset;box-sizing:border-box;color:#2d2d2d;margin:0;padding:15px;border-radius:5px;min-width:250px;max-width:300px;box-shadow:0 1px 10px #0006;z-index:1000000000;position:fixed;top:0;right:0;background-color:#fff}.driver-popover *{font-family:Helvetica Neue,Inter,ui-sans-serif,"Apple Color Emoji",Helvetica,Arial,sans-serif}.driver-popover-title{font:19px/normal sans-serif;font-weight:700;display:block;position:relative;line-height:1.5;zoom:1;margin:0}.driver-popover-close-btn{all:unset;position:absolute;top:0;right:0;width:32px;height:28px;cursor:pointer;font-size:18px;font-weight:500;color:#d2d2d2;z-index:1;text-align:center;transition:color;transition-duration:.2s}.driver-popover-close-btn:hover,.driver-popover-close-btn:focus{color:#2d2d2d}.driver-popover-title[style*=block]+.driver-popover-description{margin-top:5px}.driver-popover-description{margin-bottom:0;font:14px/normal sans-serif;line-height:1.5;font-weight:400;zoom:1}.driver-popover-footer{margin-top:15px;text-align:right;zoom:1;display:flex;align-items:center;justify-content:space-between}.driver-popover-progress-text{font-size:13px;font-weight:400;color:#727272;zoom:1}.driver-popover-footer button{all:unset;display:inline-block;box-sizing:border-box;padding:3px 7px;text-decoration:none;text-shadow:1px 1px 0 #fff;background-color:#fff;color:#2d2d2d;font:12px/normal sans-serif;cursor:pointer;outline:0;zoom:1;line-height:1.3;border:1px solid #ccc;border-radius:3px}.driver-popover-footer .driver-popover-btn-disabled{opacity:.5;pointer-events:none}:not(body):has(>.driver-active-element){overflow:hidden!important}.driver-no-interaction,.driver-no-interaction *{pointer-events:none!important}.driver-popover-footer button:hover,.driver-popover-footer button:focus{background-color:#f7f7f7}.driver-popover-navigation-btns{display:flex;flex-grow:1;justify-content:flex-end}.driver-popover-navigation-btns button+button{margin-left:4px}.driver-popover-arrow{content:"";position:absolute;border:5px solid #fff}.driver-popover-arrow-side-over{display:none}.driver-popover-arrow-side-left{left:100%;border-right-color:transparent;border-bottom-color:transparent;border-top-color:transparent}.driver-popover-arrow-side-right{right:100%;border-left-color:transparent;border-bottom-color:transparent;border-top-color:transparent}.driver-popover-arrow-side-top{top:100%;border-right-color:transparent;border-bottom-color:transparent;border-left-color:transparent}.driver-popover-arrow-side-bottom{bottom:100%;border-left-color:transparent;border-top-color:transparent;border-right-color:transparent}.driver-popover-arrow-side-center{display:none}.driver-popover-arrow-side-left.driver-popover-arrow-align-start,.driver-popover-arrow-side-right.driver-popover-arrow-align-start{top:15px}.driver-popover-arrow-side-top.driver-popover-arrow-align-start,.driver-popover-arrow-side-bottom.driver-popover-arrow-align-start{left:15px}.driver-popover-arrow-align-end.driver-popover-arrow-side-left,.driver-popover-arrow-align-end.driver-popover-arrow-side-right{bottom:15px}.driver-popover-arrow-side-top.driver-popover-arrow-align-end,.driver-popover-arrow-side-bottom.driver-popover-arrow-align-end{right:15px}.driver-popover-arrow-side-left.driver-popover-arrow-align-center,.driver-popover-arrow-side-right.driver-popover-arrow-align-center{top:50%;margin-top:-5px}.driver-popover-arrow-side-top.driver-popover-arrow-align-center,.driver-popover-arrow-side-bottom.driver-popover-arrow-align-center{left:50%;margin-left:-5px}.driver-popover-arrow-none{display:none}\n';
   document.head.appendChild(__vite_style__);
@@ -633,42 +639,69 @@
       }
     };
   }
-  let DriverInstance;
-  const defaultDriverOption = {
-    showProgress: true,
-    steps: []
+  function getStepIndex(num) {
+    return isNaN(num) ? null : Number(num) - 1;
+  }
+  const defaultOption = {
+    showProgress: true
   };
-  let userOption;
+  class VDriver {
+    constructor(steps, options) {
+      __publicField(this, "_driver");
+      __publicField(this, "steps");
+      __publicField(this, "options");
+      if (typeof steps === "object" && !Array.isArray(steps)) {
+        options = steps;
+        steps = [];
+      }
+      this.steps = steps.filter((s) => !!s);
+      this.options = Object.assign({}, defaultOption, options);
+      this._driver = ke(Object.assign({ steps: this.steps }, options));
+    }
+    drive() {
+      this.steps = this.steps.filter((s) => !!s);
+      this._driver.setSteps(this.steps);
+      this._driver.drive();
+    }
+    changeStep(index, step) {
+      this.steps[index] = step || void 0;
+    }
+  }
+  __publicField(VDriver, "instance");
+  function createInstance(steps, options) {
+    if (!VDriver.instance) {
+      VDriver.instance = new VDriver(steps, options);
+    }
+    return VDriver.instance;
+  }
+  let DriverInstance;
   const install = (app, option = {}) => {
     if (install._installed) {
       console.error("Duplicated install. Just install the lib once");
       return;
     }
     install._installed = true;
-    userOption = option;
+    DriverInstance = createInstance(option);
     app.directive("step", {
       mounted(el, binding) {
-        const stepIndex = binding.arg !== "" ? Number(binding.arg) - 1 : 1;
-        if (!defaultDriverOption.steps[stepIndex]) {
-          defaultDriverOption.steps[stepIndex] = {
+        if (DriverInstance) {
+          const stepIndex = getStepIndex(binding.arg);
+          DriverInstance.changeStep(stepIndex, {
             element: el
-          };
+          });
+        }
+      },
+      beforeUnmount(_, binding) {
+        if (DriverInstance) {
+          const stepIndex = getStepIndex(binding.arg);
+          DriverInstance.changeStep(stepIndex);
         }
       }
     });
   };
   install._installed = false;
-  function creaetDriver(option) {
-    const config = Object.assign({}, defaultDriverOption, option);
-    return {
-      driverObj: ke(config)
-    };
-  }
   function useDirver() {
-    if (!DriverInstance) {
-      DriverInstance = creaetDriver(userOption);
-    }
-    return DriverInstance.driverObj;
+    return DriverInstance;
   }
   exports2.default = install;
   exports2.useDirver = useDirver;

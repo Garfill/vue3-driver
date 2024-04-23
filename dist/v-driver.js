@@ -1,4 +1,10 @@
 import './style/v-driver.css';
+var __defProp = Object.defineProperty;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField = (obj, key, value) => {
+  __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+  return value;
+};
 let F = {};
 function D(e = {}) {
   F = {
@@ -627,42 +633,69 @@ function ke(e = {}) {
     }
   };
 }
-let DriverInstance;
-const defaultDriverOption = {
-  showProgress: true,
-  steps: []
+function getStepIndex(num) {
+  return isNaN(num) ? null : Number(num) - 1;
+}
+const defaultOption = {
+  showProgress: true
 };
-let userOption;
+class VDriver {
+  constructor(steps, options) {
+    __publicField(this, "_driver");
+    __publicField(this, "steps");
+    __publicField(this, "options");
+    if (typeof steps === "object" && !Array.isArray(steps)) {
+      options = steps;
+      steps = [];
+    }
+    this.steps = steps.filter((s) => !!s);
+    this.options = Object.assign({}, defaultOption, options);
+    this._driver = ke(Object.assign({ steps: this.steps }, options));
+  }
+  drive() {
+    this.steps = this.steps.filter((s) => !!s);
+    this._driver.setSteps(this.steps);
+    this._driver.drive();
+  }
+  changeStep(index, step) {
+    this.steps[index] = step || void 0;
+  }
+}
+__publicField(VDriver, "instance");
+function createInstance(steps, options) {
+  if (!VDriver.instance) {
+    VDriver.instance = new VDriver(steps, options);
+  }
+  return VDriver.instance;
+}
+let DriverInstance;
 const install = (app, option = {}) => {
   if (install._installed) {
     console.error("Duplicated install. Just install the lib once");
     return;
   }
   install._installed = true;
-  userOption = option;
+  DriverInstance = createInstance(option);
   app.directive("step", {
     mounted(el, binding) {
-      const stepIndex = binding.arg !== "" ? Number(binding.arg) - 1 : 1;
-      if (!defaultDriverOption.steps[stepIndex]) {
-        defaultDriverOption.steps[stepIndex] = {
+      if (DriverInstance) {
+        const stepIndex = getStepIndex(binding.arg);
+        DriverInstance.changeStep(stepIndex, {
           element: el
-        };
+        });
+      }
+    },
+    beforeUnmount(_, binding) {
+      if (DriverInstance) {
+        const stepIndex = getStepIndex(binding.arg);
+        DriverInstance.changeStep(stepIndex);
       }
     }
   });
 };
 install._installed = false;
-function creaetDriver(option) {
-  const config = Object.assign({}, defaultDriverOption, option);
-  return {
-    driverObj: ke(config)
-  };
-}
 function useDirver() {
-  if (!DriverInstance) {
-    DriverInstance = creaetDriver(userOption);
-  }
-  return DriverInstance.driverObj;
+  return DriverInstance;
 }
 export {
   install as default,

@@ -1,22 +1,14 @@
 import type { App } from 'vue';
-import { driver } from 'driver.js'
-import type { Config } from  'driver.js'
-import 'driver.js/dist/driver.css' // inline for css inject
+import 'driver.js/dist/driver.css'
+import { createInstance, getStepIndex } from "./helper.ts"; // inline for css inject
 
 interface installFuncType {
   (app: App<Element>): void
+
   _installed: boolean
 }
 
 let DriverInstance: any
-
-// default driver config
-const defaultDriverOption: Config = {
-  showProgress: true,
-  steps: []
-}
-
-let userOption: any
 
 const install: installFuncType = (app: App<Element>, option: any = {}) => {
   if (install._installed) {
@@ -24,16 +16,21 @@ const install: installFuncType = (app: App<Element>, option: any = {}) => {
     return
   }
   install._installed = true
-  userOption = option
+  DriverInstance = createInstance(option)
 
   app.directive('step', {
     mounted(el, binding) {
-      // binding.arg starts from 1
-      const stepIndex = binding.arg !== '' ? Number(binding.arg) - 1 : 1
-      if (!defaultDriverOption.steps![stepIndex]) {
-        defaultDriverOption.steps![stepIndex] = {
-          element: el,
-        }
+      if (DriverInstance) {
+        const stepIndex = getStepIndex(binding.arg)
+        DriverInstance.changeStep(stepIndex, {
+          element: el
+        })
+      }
+    },
+    beforeUnmount(_, binding) {
+      if (DriverInstance) {
+        const stepIndex = getStepIndex(binding.arg)
+        DriverInstance.changeStep(stepIndex)
       }
     }
   })
@@ -42,19 +39,10 @@ const install: installFuncType = (app: App<Element>, option: any = {}) => {
 install._installed = false
 
 
-function creaetDriver(option: any) {
-  const config = Object.assign({}, defaultDriverOption, option)
-  return {
-    driverObj: driver(config),
-  }
+function useDirver() {
+  return DriverInstance;
 }
 
-function useDirver() {
-  if (!DriverInstance) {
-    DriverInstance = creaetDriver(userOption)
-  }
-  return DriverInstance.driverObj;
-}
 
 export default install;
 export {
