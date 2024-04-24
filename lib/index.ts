@@ -24,13 +24,14 @@ const install: installFuncType = (app: App<Element>, option: any = {}) => {
 
   app.directive('step', {
     mounted(el, binding) {
-      console.log(binding)
       const instanceKey = Object.keys(binding.modifiers)[0]
       const instance = getDriverInstanceFromKey(instanceKey)
+      const popover = binding.value
       if (instance) {
         const stepIndex = getStepIndex(binding.arg)
         instance.changeStep(stepIndex, {
-          element: el
+          element: el,
+          popover,
         })
       }
     },

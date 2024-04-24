@@ -656,7 +656,7 @@ var __publicField = (obj, key, value) => {
       }
       this.steps = steps.filter((s) => !!s);
       this.options = Object.assign({}, defaultOption, options);
-      this._driver = ke(Object.assign({ steps: this.steps }, options));
+      this._driver = ke(Object.assign({ steps: this.steps }, this.options));
     }
     drive() {
       this.steps = this.steps.filter((s) => !!s);
@@ -683,13 +683,14 @@ var __publicField = (obj, key, value) => {
     install._installed = true;
     app.directive("step", {
       mounted(el, binding) {
-        console.log(binding);
         const instanceKey = Object.keys(binding.modifiers)[0];
         const instance = getDriverInstanceFromKey(instanceKey);
+        const popover = binding.value;
         if (instance) {
           const stepIndex = getStepIndex(binding.arg);
           instance.changeStep(stepIndex, {
-            element: el
+            element: el,
+            popover
           });
         }
       },

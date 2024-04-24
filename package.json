@@ -32,5 +32,7 @@
   },
   "files": [
     "dist/**/*"
-  ]
+  ],
+  "homepage": "https://github.com/Garfill/vue3-driver",
+  "repository": "https://github.com/Garfill/vue3-driver"
 }

@@ -25,7 +25,7 @@ class VDriver {
     }
     this.steps = steps.filter(s => !!s)
     this.options = Object.assign({}, defaultOption, options)
-    this._driver = driver(Object.assign({steps: this.steps}, options))
+    this._driver = driver(Object.assign({steps: this.steps}, this.options))
   }
   drive() {
     this.steps = this.steps.filter(s => !!s)

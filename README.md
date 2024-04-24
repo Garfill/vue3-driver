@@ -1,6 +1,6 @@
 # V-Driver
 
-Tool for Vue3 and driver.js
+A lib for drive the user's focus across the page with Vue3 and [Driver.js](https://driverjs.com).
 
 ## Install
 

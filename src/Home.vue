@@ -14,6 +14,9 @@
     <li>
       <router-link to="/multi">page multi</router-link>
     </li>
+    <li>
+      <router-link to="/option">page option</router-link>
+    </li>
   </ul>
 </template>
 
