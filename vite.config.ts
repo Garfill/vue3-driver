@@ -31,7 +31,7 @@ export default defineConfig({
   },
   build: {
     cssCodeSplit: true,
-    minify: false,
+    // minify: false,
     lib: {
       entry: path.resolve(__dirname, './lib/index.ts'),
       name: 'VDriver',

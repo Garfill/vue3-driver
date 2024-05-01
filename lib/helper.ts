@@ -1,4 +1,5 @@
 import { driver } from 'driver.js'
+import 'driver.js/dist/driver.css'
 
 function getStepIndex(num: any): number | null {
   return isNaN(num) ? null :  Number(num) - 1
@@ -34,6 +35,12 @@ class VDriver {
   }
   changeStep(index: number, step: any) {
     this.steps[index] = step || undefined
+  }
+  destroy() {
+    if (this._driver?.isActive()) {
+      this._driver.destroy()
+      this._driver = null
+    }
   }
 }
 

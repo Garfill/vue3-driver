@@ -1,6 +1,5 @@
 import type { App } from 'vue';
-import 'driver.js/dist/driver.css'
-import { createInstanceMaker, getStepIndex } from "./helper.ts"; // inline for css inject
+import { createInstanceMaker, getStepIndex } from "./helper.ts";
 
 interface installFuncType {
   (app: App<Element>): void
@@ -39,8 +38,8 @@ const install: installFuncType = (app: App<Element>, option: any = {}) => {
       const instanceKey = Object.keys(binding.modifiers)[0]
       const instance = getDriverInstanceFromKey(instanceKey)
       if (instance) {
-        const stepIndex = getStepIndex(binding.arg)
-        instance.changeStep(stepIndex)
+        instance.destroy()
+        destroyInstance(instanceKey)
       }
     }
   })
@@ -62,6 +61,9 @@ function getDriverInstanceFromKey(key: string = 'default') {
   return driverInstMap.get(key)
 }
 
+function destroyInstance(key: string) {
+  driverInstMap.delete(key)
+}
 
 export default install;
 export {
